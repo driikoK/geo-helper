@@ -6,6 +6,7 @@ export const PageContainer = styled.div`
 `;
 
 export const PageWrapper = styled.div`
+  flex: 1;
   display: flex;
   ${({ theme }) =>
     theme.mq({
