@@ -15,7 +15,7 @@ import dynamic from 'next/dynamic';
 import React from 'react';
 import { elevationApi } from './consts';
 import { LocationDataType } from './types';
-import { IconButton, TextField } from '@mui/material';
+import { IconButton, Snackbar, TextField } from '@mui/material';
 import Button from '@/components/Button';
 import MyLocationIcon from '@mui/icons-material/MyLocation';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
@@ -31,10 +31,11 @@ const ElevationPage: FunctionComponent = () => {
     lng: 24.04756701152707,
   });
   const [elevation, setElevation] = useState<number>(312);
-  const [lat, setLat] = useState<number>(0);
-  const [lng, setLng] = useState<number>(0);
+  const [lat, setLat] = useState<number | null>(null);
+  const [lng, setLng] = useState<number | null>(null);
   const [isElevationLoad, setElevationLoad] = useState<boolean>(false);
   const [elevationError, setElevationError] = useState<string>('');
+  const [isPopOpen, setPopOpen] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -58,11 +59,13 @@ const ElevationPage: FunctionComponent = () => {
   }, [marker]);
 
   const handleSubmitButton = () => {
-    setMarker({ lat, lng });
-    DynamicMap = dynamic(() => import('@/components/Map'), {
-      ssr: false,
-      loading: () => <Loading>Завантаження...</Loading>,
-    });
+    if (lat && lng) {
+      setMarker({ lat, lng });
+      DynamicMap = dynamic(() => import('@/components/Map'), {
+        ssr: false,
+        loading: () => <Loading>Завантаження...</Loading>,
+      });
+    }
   };
 
   const handleLocationButton = () => {
@@ -83,7 +86,13 @@ const ElevationPage: FunctionComponent = () => {
   };
 
   const copyToClipboard = (string: string) => {
-    navigator.clipboard.writeText(string);
+    try {
+      navigator.clipboard.writeText(string);
+    } catch (e) {
+      console.log('copy error: ' + e)
+    } finally {
+      setPopOpen(true);
+    }
   };
 
   return (
@@ -103,7 +112,7 @@ const ElevationPage: FunctionComponent = () => {
           <TitleWrapper>
             <div>
               <Paragraph>
-                Ширина: <Underline>{marker.lat}</Underline>;
+                Широта: <Underline>{marker.lat}</Underline>;
               </Paragraph>
               <br />
               <Paragraph>
@@ -112,7 +121,7 @@ const ElevationPage: FunctionComponent = () => {
             </div>
             <IconButton
               onClick={() =>
-                copyToClipboard(`Ширина: ${marker.lat}; Довгота: ${marker.lng}`)
+                copyToClipboard(`Широта: ${marker.lat}; Довгота: ${marker.lng}`)
               }
               sx={{ padding: 0 }}
             >
@@ -121,7 +130,13 @@ const ElevationPage: FunctionComponent = () => {
           </TitleWrapper>
           <Title>Висота:</Title>
           <TitleWrapper>
-            <Paragraph>{ elevationError ? elevationError : isElevationLoad ?'Завантаження...' : `${elevation} м` }</Paragraph>
+            <Paragraph>
+              {elevationError
+                ? elevationError
+                : isElevationLoad
+                ? 'Завантаження...'
+                : `${elevation} м`}
+            </Paragraph>
             <IconButton
               onClick={() => copyToClipboard(`${elevation} м`)}
               sx={{ padding: 0 }}
@@ -133,20 +148,27 @@ const ElevationPage: FunctionComponent = () => {
           <TextField
             variant="standard"
             type="number"
-            label="Ширина"
-            value={lat}
+            label="Широта"
+            value={lat ? lat : ''}
             onChange={(e) => setLat(Number(e.target.value))}
           />
           <TextField
             variant="standard"
             type="number"
             label="Довгота"
-            value={lng}
+            value={lng ? lng : ''}
             onChange={(e) => setLng(Number(e.target.value))}
           />
-          <Button variant="contained" onClick={handleSubmitButton}>
+          <Button variant="contained" disabled={!lat || !lng} onClick={handleSubmitButton}>
             Розрахувати
           </Button>
+          <Snackbar
+            anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+            open={isPopOpen}
+            autoHideDuration={2000}
+            onClose={() => setPopOpen(false)}
+            message="Скопійовано"
+          />
         </ControlWrapper>
       </PageWrapper>
     </PageContainer>

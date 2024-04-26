@@ -62,7 +62,6 @@ const Header: FunctionComponent = () => {
           Азимут між двома координатами
         </MenuItem>
         <MenuItem onClick={() => handleLink('/elevation')}>Визначення висоти</MenuItem>
-        <a href="/elevation"><MenuItem>Визначення вqисоти</MenuItem></a>
       </Menu>
     </HeaderContainer>
   );

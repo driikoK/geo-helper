@@ -15,13 +15,16 @@
     "@mui/material": "^5.15.15",
     "@react-pdf/renderer": "^3.4.4",
     "facepaint": "^1.2.1",
+    "formik": "^2.4.6",
     "leaflet": "^1.9.4",
+    "mgrs": "^2.0.0",
     "next": "14.2.2",
     "normalize.css": "^8.0.1",
     "react": "^18",
     "react-dom": "^18",
     "react-leaflet": "^4.2.1",
-    "styled-components": "^6.1.8"
+    "styled-components": "^6.1.8",
+    "utm-latlng": "^1.0.8"
   },
   "devDependencies": {
     "@types/facepaint": "^1.2.5",
