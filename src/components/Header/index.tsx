@@ -9,7 +9,7 @@ import {
 import { IconButton, Menu, MenuItem } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import TravelExploreIcon from '@mui/icons-material/TravelExplore';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 const Header: FunctionComponent = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -26,11 +26,6 @@ const Header: FunctionComponent = () => {
   const router = useRouter();
 
   const handleLink = (link: string) => {
-    router.push(link, undefined, { shallow: true });
-    handleCloseMenu();
-  };
-
-  const handleLink1 = (link: string) => {
     router.push(link);
     handleCloseMenu();
   };
@@ -59,7 +54,7 @@ const Header: FunctionComponent = () => {
           horizontal: 'left',
         }}
       >
-        <MenuItem onClick={() => handleLink1('/convert')}>Конвертор координат</MenuItem>
+        <MenuItem onClick={() => handleLink('/convert')}>Конвертор координат</MenuItem>
         <MenuItem onClick={() => handleLink('/')}>
           Відстань між двома координатами
         </MenuItem>
