@@ -1,1 +1,1 @@
-export const elevationApi = 'https://api.opentopodata.org/v1/aster30m?locations='
+export const elevationApi = 'https://api.open-elevation.com/api/v1/lookup?locations='

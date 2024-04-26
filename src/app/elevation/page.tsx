@@ -30,20 +30,27 @@ const ElevationPage: FunctionComponent = () => {
     lat: 49.838203879003814,
     lng: 24.04756701152707,
   });
-  const [elevation, setElevation] = useState<number>(356);
+  const [elevation, setElevation] = useState<number>(312);
   const [lat, setLat] = useState<number>(0);
   const [lng, setLng] = useState<number>(0);
+  const [isElevationLoad, setElevationLoad] = useState<boolean>(false);
+  const [elevationError, setElevationError] = useState<string>('');
 
   useEffect(() => {
     const fetchData = async () => {
+      setElevationLoad(true);
+      setElevationError('');
       try {
         const response = await fetch(
-          `${elevationApi}${marker.lat}${marker.lng}`
+          `${elevationApi}${marker.lat},${marker.lng}`
         );
-        const result: LocationDataType[] = await response.json();
-        setElevation(result[0].elevation);
+        const result: LocationDataType = await response.json();
+        setElevation(result.results[0].elevation);
       } catch (error) {
         console.error('Error fetching data:', error);
+        setElevationError('Сталась помилка...');
+      } finally {
+        setElevationLoad(false);
       }
     };
 
@@ -114,7 +121,7 @@ const ElevationPage: FunctionComponent = () => {
           </TitleWrapper>
           <Title>Висота:</Title>
           <TitleWrapper>
-            <Paragraph>{elevation} м</Paragraph>
+            <Paragraph>{ elevationError ? elevationError : isElevationLoad ?'Завантаження...' : `${elevation} м` }</Paragraph>
             <IconButton
               onClick={() => copyToClipboard(`${elevation} м`)}
               sx={{ padding: 0 }}
