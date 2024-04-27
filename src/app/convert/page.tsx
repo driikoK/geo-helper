@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 'use client';
 
 import { FunctionComponent, useEffect, useState } from 'react';
@@ -15,13 +16,22 @@ import {
 import dynamic from 'next/dynamic';
 import React from 'react';
 import { IconButton, Snackbar, TextField } from '@mui/material';
+import { useFormik } from 'formik';
+import { initialValues } from './const';
+import {
+  convertMGRSToLatLng,
+  convertToMGRS,
+  convertToUTM,
+  convertToWGS84,
+  convertUTMToLatLng,
+  convertWGS84ToLatLng,
+} from './utils';
+import Button from '@/components/Button';
+
 import MyLocationIcon from '@mui/icons-material/MyLocation';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
-import { useFormik } from 'formik';
-import { initialValues } from './const';
-import { convertToMGRS, convertToUTM, convertToWGS84 } from './utils';
-import Button from '@/components/Button';
+import CalculateIcon from '@mui/icons-material/Calculate';
 
 let DynamicMap = dynamic(() => import('@/components/Map'), {
   ssr: false,
@@ -47,8 +57,55 @@ const ElevationPage: FunctionComponent = () => {
     formik.setFieldValue('wgs84', wgs84);
     formik.setFieldValue('utm', utm);
     formik.setFieldValue('mgrs', mgrs);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [marker]);
+
+  const handleMgrsInput = () => {
+    const lngLat = convertMGRSToLatLng(formik.values.mgrs);
+    if (lngLat) {
+      const wgs84 = convertToWGS84(lngLat[1], lngLat[0]);
+      const utm = convertToUTM(lngLat[1], lngLat[0]);
+
+      formik.setFieldValue('wgs84', wgs84);
+      formik.setFieldValue('utm', utm);
+      setMarker({ lat: lngLat[1], lng: lngLat[0] });
+      DynamicMap = dynamic(() => import('@/components/Map'), {
+        ssr: false,
+        loading: () => <Loading>Завантаження...</Loading>,
+      });
+    }
+  };
+
+  const handleUtmInput = () => {
+    const latLng = convertUTMToLatLng(formik.values.utm);
+    if (latLng) {
+      const wgs84 = convertToWGS84(latLng.lat, latLng.lng);
+      const mgrs = convertToMGRS(latLng.lat, latLng.lng);
+
+      formik.setFieldValue('wgs84', wgs84);
+      formik.setFieldValue('mgrs', mgrs);
+      setMarker({ lat: latLng.lat, lng: latLng.lng });
+      DynamicMap = dynamic(() => import('@/components/Map'), {
+        ssr: false,
+        loading: () => <Loading>Завантаження...</Loading>,
+      });
+    }
+  };
+
+  const handleWgs84Input = () => {
+    const latLng = convertWGS84ToLatLng(formik.values.wgs84);
+    if (latLng) {
+      const utm = convertToUTM(latLng.lat, latLng.lng);
+      const mgrs = convertToMGRS(latLng.lat, latLng.lng);
+
+      formik.setFieldValue('utm', utm);
+      formik.setFieldValue('mgrs', mgrs);
+      setMarker({ lat: latLng.lat, lng: latLng.lng });
+      DynamicMap = dynamic(() => import('@/components/Map'), {
+        ssr: false,
+        loading: () => <Loading>Завантаження...</Loading>,
+      });
+    }
+  };
 
   const handleLocationButton = () => {
     navigator.geolocation.getCurrentPosition(
@@ -118,27 +175,45 @@ const ElevationPage: FunctionComponent = () => {
               <ContentCopyIcon />
             </IconButton>
           </TitleWrapper>
-          <TextField
-            name="wgs84"
-            variant="standard"
-            label="WGS84"
-            value={formik.values.wgs84}
-            onChange={formik.handleChange}
-          />
-          <TextField
-            name="utm"
-            variant="standard"
-            label="UTM"
-            value={formik.values.utm}
-            onChange={formik.handleChange}
-          />
-          <TextField
-            name="mgrs"
-            variant="standard"
-            label="MGRS"
-            value={formik.values.mgrs}
-            onChange={formik.handleChange}
-          />
+          <TitleWrapper>
+            <TextField
+              name="wgs84"
+              variant="standard"
+              label="WGS84"
+              value={formik.values.wgs84}
+              onChange={formik.handleChange}
+              sx={{width: '90%'}}
+            />
+            <IconButton sx={{ padding: 0 }} onClick={handleWgs84Input}>
+              <CalculateIcon />
+            </IconButton>
+          </TitleWrapper>
+          <TitleWrapper>
+            <TextField
+              name="utm"
+              variant="standard"
+              label="UTM"
+              value={formik.values.utm}
+              onChange={formik.handleChange}
+              sx={{width: '90%'}}
+            />
+            <IconButton sx={{ padding: 0 }} onClick={handleUtmInput}>
+              <CalculateIcon />
+            </IconButton>
+          </TitleWrapper>
+          <TitleWrapper>
+            <TextField
+              name="mgrs"
+              variant="standard"
+              label="MGRS"
+              value={formik.values.mgrs}
+              onChange={formik.handleChange}
+              sx={{width: '90%'}}
+            />
+            <IconButton sx={{ padding: 0 }} onClick={handleMgrsInput}>
+              <CalculateIcon />
+            </IconButton>
+          </TitleWrapper>
           <ButtonsWrapper>
             <Button
               variant="contained"
