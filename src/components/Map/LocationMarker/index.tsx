@@ -13,6 +13,8 @@ export const LocationMarker: FunctionComponent<ILocationMarkerProps> = ({callbac
   const myIcon = new Icon({
     iconUrl: '/marker.png',
     iconSize: [52, 52],
+    iconAnchor: [27, 52],
+    popupAnchor: [0, -52]
   });
   const [marker, setMarker] = useState(initialMarker);
 

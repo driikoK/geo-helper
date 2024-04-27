@@ -55,10 +55,10 @@ const Header: FunctionComponent = () => {
         }}
       >
         <MenuItem onClick={() => handleLink('/convert')}>Конвертор координат</MenuItem>
-        <MenuItem onClick={() => handleLink('/')}>
+        <MenuItem onClick={() => handleLink('/distance')}>
           Відстань між двома координатами
         </MenuItem>
-        <MenuItem onClick={() => handleLink('/')}>
+        <MenuItem onClick={() => handleLink('/azimuth')}>
           Азимут між двома координатами
         </MenuItem>
         <MenuItem onClick={() => handleLink('/elevation')}>Визначення висоти</MenuItem>

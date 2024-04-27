@@ -32,6 +32,7 @@ import MyLocationIcon from '@mui/icons-material/MyLocation';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 import CalculateIcon from '@mui/icons-material/Calculate';
+import { IMarkers } from '@/components/Map/types';
 
 let DynamicMap = dynamic(() => import('@/components/Map'), {
   ssr: false,
@@ -72,6 +73,17 @@ const ElevationPage: FunctionComponent = () => {
         ssr: false,
         loading: () => <Loading>Завантаження...</Loading>,
       });
+    }
+  };
+
+  const setMarkerWithTypeCheck = (marker: IMarkers | {
+    lat: number;
+    lng: number;
+  }) => {
+    if ('lat' in marker && 'lng' in marker) {
+      setMarker({ lat: marker.lat, lng: marker.lng });
+    } else {
+      console.log('Marker is not of type LatLng');
     }
   };
 
@@ -147,7 +159,7 @@ const ElevationPage: FunctionComponent = () => {
       <PageWrapper>
         <DynamicMap
           marker={marker}
-          callback={(marker) => setMarker({ lat: marker.lat, lng: marker.lng })}
+          callback={(marker) => setMarkerWithTypeCheck(marker)}
         />
         <ControlWrapper>
           <TitleWrapper>

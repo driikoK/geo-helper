@@ -19,6 +19,7 @@ import { IconButton, Snackbar, TextField } from '@mui/material';
 import Button from '@/components/Button';
 import MyLocationIcon from '@mui/icons-material/MyLocation';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import { IMarkers } from '@/components/Map/types';
 
 let DynamicMap = dynamic(() => import('@/components/Map'), {
   ssr: false,
@@ -95,12 +96,23 @@ const ElevationPage: FunctionComponent = () => {
     }
   };
 
+  const setMarkerWithTypeCheck = (marker: IMarkers | {
+    lat: number;
+    lng: number;
+  }) => {
+    if ('lat' in marker && 'lng' in marker) {
+      setMarker({ lat: marker.lat, lng: marker.lng });
+    } else {
+      console.log('Marker is not of type LatLng');
+    }
+  };
+
   return (
     <PageContainer>
       <PageWrapper>
         <DynamicMap
           marker={marker}
-          callback={(marker) => setMarker({ lat: marker.lat, lng: marker.lng })}
+          callback={(marker) => setMarkerWithTypeCheck(marker)}
         />
         <ControlWrapper>
           <TitleWrapper>
