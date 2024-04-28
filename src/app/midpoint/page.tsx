@@ -102,7 +102,7 @@ const MidpointPAge: FunctionComponent = () => {
           callback={(marker) => setMarkerWithTypeCheck(marker)}
           multiple={true}
           markers={marker}
-          midpoint={midpoint}
+          midpoint={true}
         />
         <ControlWrapper>
           <Title>Вибрані точки:</Title>
