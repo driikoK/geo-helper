@@ -1,15 +1,17 @@
 'use client';
 
 import { FunctionComponent, useState } from 'react';
-import {
-  HeaderContainer,
-  LogoWrapper,
-  Paragraph,
-} from './styles';
+import { HeaderContainer, LogoWrapper, Paragraph } from './styles';
 import { IconButton, Menu, MenuItem } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import TravelExploreIcon from '@mui/icons-material/TravelExplore';
 import { useRouter } from 'next/navigation';
+
+import CalculateIcon from '@mui/icons-material/Calculate';
+import TextRotationAngleupIcon from '@mui/icons-material/TextRotationAngleup';
+import SocialDistanceIcon from '@mui/icons-material/SocialDistance';
+import HikingIcon from '@mui/icons-material/Hiking';
+import RoomIcon from '@mui/icons-material/Room';
 
 const Header: FunctionComponent = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -38,7 +40,7 @@ const Header: FunctionComponent = () => {
       </LogoWrapper>
 
       <IconButton onClick={handleClickMenu}>
-        <MenuIcon color="secondary" fontSize='medium' />
+        <MenuIcon color="secondary" fontSize="medium" />
       </IconButton>
 
       <Menu
@@ -54,14 +56,27 @@ const Header: FunctionComponent = () => {
           horizontal: 'left',
         }}
       >
-        <MenuItem onClick={() => handleLink('/convert')}>Конвертор координат</MenuItem>
-        <MenuItem onClick={() => handleLink('/distance')}>
+        <MenuItem onClick={() => handleLink('/convert')} sx={{gap: '10px'}}>
+          {' '}
+          <CalculateIcon />
+          Конвертор координат
+        </MenuItem>
+        <MenuItem onClick={() => handleLink('/distance')} sx={{gap: '10px'}}>
+          <SocialDistanceIcon />
           Відстань між двома координатами
         </MenuItem>
-        <MenuItem onClick={() => handleLink('/azimuth')}>
+        <MenuItem onClick={() => handleLink('/azimuth')} sx={{gap: '10px'}}>
+          <TextRotationAngleupIcon />
           Азимут між двома координатами
         </MenuItem>
-        <MenuItem onClick={() => handleLink('/elevation')}>Визначення висоти</MenuItem>
+        <MenuItem onClick={() => handleLink('/midpoint')} sx={{gap: '10px'}}>
+          <RoomIcon />
+          Середня точка між двома координатами
+        </MenuItem>
+        <MenuItem onClick={() => handleLink('/elevation')} sx={{gap: '10px'}}>
+          <HikingIcon />
+          Визначення висоти
+        </MenuItem>
       </Menu>
     </HeaderContainer>
   );

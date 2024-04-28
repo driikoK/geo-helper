@@ -9,11 +9,12 @@ import { IMarkers } from '../types';
 interface ITwoLocationMarkersProps {
   callback: (latlng: IMarkers) => void;
   markers: IMarkers;
+  midpoint: boolean | undefined;
 }
 
 export const TwoLocationMarkers: FunctionComponent<
   ITwoLocationMarkersProps
-> = ({ callback, markers }) => {
+> = ({ callback, markers, midpoint }) => {
   const [marker, setMarker] = useState(markers);
 
   const IconFirst = new Icon({
@@ -28,6 +29,13 @@ export const TwoLocationMarkers: FunctionComponent<
     iconSize: [52, 52],
     iconAnchor: [27, 52],
     popupAnchor: [0, -52],
+  });
+
+  const IconMidpoint = new Icon({
+    iconUrl: '/marker.png',
+    iconSize: [32, 32],
+    iconAnchor: [16, 32],
+    popupAnchor: [0, -32],
   });
 
   const map = useMapEvents({
@@ -70,6 +78,13 @@ export const TwoLocationMarkers: FunctionComponent<
       )}
       {marker.lat2 && marker.lng2 && (
         <Marker position={{ lat: marker.lat2, lng: marker.lng2 }} icon={IconSecond}>
+          <Popup>
+            Твоя позиція {marker.lat2} : {marker.lng2}
+          </Popup>
+        </Marker>
+      )}
+      {midpoint && marker.lat1 && marker.lng1 && marker.lat2 && marker.lng2 && (
+        <Marker position={{ lat: (marker.lat1+marker.lat2)/2, lng: (marker.lng1+marker.lng2)/2 }} icon={IconMidpoint}>
           <Popup>
             Твоя позиція {marker.lat2} : {marker.lng2}
           </Popup>

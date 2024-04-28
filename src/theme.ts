@@ -6,7 +6,8 @@ const colors = {
   link: '#d2ddff',
   yellow: '#e8dd09',
   gray: '#343a42',
-  lightGray: '#f7efef'
+  lightGray: '#f7efef',
+  babyBlue: '#5b9bff'
 };
 
 const font = {

@@ -1,19 +1,21 @@
 'use client';
 
 import { FunctionComponent } from 'react';
-import { TileLayer } from 'react-leaflet';
+import { Marker, TileLayer } from 'react-leaflet';
 import { LocationMarker } from './LocationMarker';
 import 'leaflet/dist/leaflet.css';
 import { LatLng } from 'leaflet';
 import { MapContainerStyled } from './styles';
 import { IMarkers } from './types';
 import { TwoLocationMarkers } from './TwoLocationMarkers';
+import { LatLngNullType } from '@/app/types';
 
 interface IMapProps {
   callback: (latlng: LatLng | IMarkers) => void;
   marker: { lat: number; lng: number };
   multiple?: boolean;
   markers?: IMarkers;
+  midpoint?: boolean;
 }
 
 const Map: FunctionComponent<IMapProps> = ({
@@ -26,6 +28,7 @@ const Map: FunctionComponent<IMapProps> = ({
     lat2: null,
     lng2: null,
   },
+  midpoint
 }) => {
   return (
     <>
@@ -47,6 +50,7 @@ const Map: FunctionComponent<IMapProps> = ({
               callback(latlng);
             }}
             markers={markers}
+            midpoint={midpoint}
           />
         ) : (
           <LocationMarker
