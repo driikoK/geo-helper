@@ -26,7 +26,7 @@ export default function Home() {
   const router = useRouter();
   const isTablet = useMediaQuery(theme.screens.tablet);
   return (
-    <PageContainer>
+    <PageContainer data-testid="home-page">
       <PageWrapper>
         <PreviewWrapper>
           <TextWrapper>

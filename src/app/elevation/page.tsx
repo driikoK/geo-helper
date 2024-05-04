@@ -108,7 +108,7 @@ const ElevationPage: FunctionComponent = () => {
   };
 
   return (
-    <PageContainer>
+    <PageContainer data-testid="elevation-page">
       <PageWrapper>
         <DynamicMap
           marker={marker}
@@ -161,14 +161,14 @@ const ElevationPage: FunctionComponent = () => {
             variant="standard"
             type="number"
             label="Широта"
-            value={lat ? lat : ''}
+            value={lat != null ? lat : ''}
             onChange={(e) => setLat(Number(e.target.value))}
           />
           <TextField
             variant="standard"
             type="number"
             label="Довгота"
-            value={lng ? lng : ''}
+            value={lng != null ? lng : ''}
             onChange={(e) => setLng(Number(e.target.value))}
           />
           <Button variant="contained" disabled={!lat || !lng} onClick={handleSubmitButton}>

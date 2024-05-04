@@ -39,7 +39,7 @@ let DynamicMap = dynamic(() => import('@/components/Map'), {
   loading: () => <Loading>Завантаження...</Loading>,
 });
 
-const ElevationPage: FunctionComponent = () => {
+const ConvertPage: FunctionComponent = () => {
   const [marker, setMarker] = useState({
     lat: 49.838203879003814,
     lng: 24.04756701152707,
@@ -155,7 +155,7 @@ const ElevationPage: FunctionComponent = () => {
   };
 
   return (
-    <PageContainer>
+    <PageContainer data-testid="convert-page">
       <PageWrapper>
         <DynamicMap
           marker={marker}
@@ -263,4 +263,4 @@ const ElevationPage: FunctionComponent = () => {
   );
 };
 
-export default ElevationPage;
+export default ConvertPage;

@@ -87,7 +87,7 @@ const DistancePage: FunctionComponent = () => {
   };
 
   return (
-    <PageContainer>
+    <PageContainer data-testid="distance-page">
       <PageWrapper>
         <DynamicMap
           marker={{
@@ -181,7 +181,7 @@ const DistancePage: FunctionComponent = () => {
               variant="standard"
               type="number"
               label="Широта 1"
-              value={formik.values.lat1 ? formik.values.lat1 : ''}
+              value={formik.values.lat1 != null ? formik.values.lat1 : ''}
               onChange={formik.handleChange}
             />
             <TextField
@@ -189,7 +189,7 @@ const DistancePage: FunctionComponent = () => {
               variant="standard"
               type="number"
               label="Довгота 1"
-              value={formik.values.lng1 ? formik.values.lng1 : ''}
+              value={formik.values.lng1 != null ? formik.values.lng1 : ''}
               onChange={formik.handleChange}
             />
           </InputWrapper>
@@ -199,7 +199,7 @@ const DistancePage: FunctionComponent = () => {
               variant="standard"
               type="number"
               label="Широта 2"
-              value={formik.values.lat2 ? formik.values.lat2 : ''}
+              value={formik.values.lat2 != null ? formik.values.lat2 : ''}
               onChange={formik.handleChange}
             />
             <TextField
@@ -207,7 +207,7 @@ const DistancePage: FunctionComponent = () => {
               variant="standard"
               type="number"
               label="Довгота 2"
-              value={formik.values.lng2 ? formik.values.lng2 : ''}
+              value={formik.values.lng2 != null ? formik.values.lng2 : ''}
               onChange={formik.handleChange}
             />
           </InputWrapper>
