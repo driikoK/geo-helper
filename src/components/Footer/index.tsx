@@ -20,7 +20,7 @@ const Footer: FunctionComponent = () => {
     <FooterContainer>
       <LogoWrapper onClick={() => handleLink('/')}>
         <TravelExploreIcon color="secondary" fontSize="medium" />
-        <Paragraph>Geo-Helper ({year}). Розробив: Гриців Михайло Олегович, ІППТ | Національний університет «Львівська політехніка»</Paragraph>
+        <Paragraph>Geo-Helper ({year})</Paragraph>
       </LogoWrapper>
     </FooterContainer>
   );
